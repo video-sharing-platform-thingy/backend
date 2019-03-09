@@ -17,5 +17,6 @@
 # JetBrains
 *.idea
 
-# Transcoded directory
-transcoded/**
+# output directories
+transcoded/
+uploaded/
