@@ -9,18 +9,21 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-func download(ctx *fasthttp.RequestCtx) (string, error) {
-	uuid := uuid.New().String()
-	toPath, err := filepath.Abs("./uploaded/" + uuid + "-" + string(ctx.FormValue("name")))
+func Download(ctx *fasthttp.RequestCtx) (string, error) {
+	vidUuid := uuid.New().String()
+	toPath, err := filepath.Abs("./uploaded/" + vidUuid + "-" + string(ctx.FormValue("name")))
 	if err != nil {
 		return "", err
 	}
-	to, err := os.OpenFile(toPath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+
+	to, err := os.OpenFile(toPath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0777)
+
 	if err != nil {
 		return "", err
 	}
 
 	fheader, err := ctx.FormFile("file")
+
 	if err != nil {
 		return "", err
 	}
@@ -29,9 +32,18 @@ func download(ctx *fasthttp.RequestCtx) (string, error) {
 		return "", err
 	}
 
-	io.Copy(to, from)
-	to.Close()
-	from.Close()
+	_, err = io.Copy(to, from)
+	if err != nil {
+		return "", err
+	}
+	err = to.Close()
+	if err != nil {
+		return "", err
+	}
+	err = from.Close()
+	if err != nil {
+		return "", err
+	}
 
 	return toPath, nil
 }

@@ -16,14 +16,17 @@ func PostUpload(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	uuid := uuid.New().String()
-	toPath, err := filepath.Abs("./transcoded/" + uuid + ".mp4")
+	vidUuid := uuid.New().String()
+	toPath, err := filepath.Abs("./transcoded/" + vidUuid + ".mp4")
 	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 		return
 	}
-	transcode(fromPath, toPath)
-
+	err = transcode(fromPath, toPath)
+	if err !=nil{
+		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
+		return
+	}
 	ctx.SetContentType("video/mp4")
 	ctx.SendFile(toPath)
 }
