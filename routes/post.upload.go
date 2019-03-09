@@ -10,7 +10,7 @@ import (
 
 func PostUpload(ctx *fasthttp.RequestCtx) {
 	log.Println("Incoming request")
-	fromPath, err := download(ctx)
+	fromPath, err := Download(ctx)
 	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusBadRequest)
 		return
@@ -22,8 +22,8 @@ func PostUpload(ctx *fasthttp.RequestCtx) {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 		return
 	}
-	err = transcode(fromPath, toPath)
-	if err !=nil{
+	err = Transcode(fromPath, toPath)
+	if err != nil{
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 		return
 	}
