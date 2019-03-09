@@ -1,8 +1,8 @@
 package main
 
 import (
-	"hello/routes"
 	"log"
+	"vspt/routes"
 
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
