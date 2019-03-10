@@ -5,7 +5,7 @@ import (
 	"github.com/valyala/fasthttp"
 	"log"
 	"path/filepath"
-	"video-sharing-platform-thingy/backend/utils"
+	"vspt/utils"
 )
 
 func PostUpload(ctx *fasthttp.RequestCtx) {

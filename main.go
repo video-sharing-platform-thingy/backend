@@ -4,8 +4,8 @@ import (
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
 	"log"
-	"github.com/video-sharing-platform-thingy/backend/routes"
-	"github.com/video-sharing-platform-thingy/backend/utils"
+	"vspt/routes"
+	"vspt/utils"
 )
 
 func main() {
