@@ -23,7 +23,7 @@ func PostUpload(ctx *fasthttp.RequestCtx) {
 		return
 	}
 	err = utils.Transcode(fromPath, toPath)
-	if err != nil{
+	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 		return
 	}
