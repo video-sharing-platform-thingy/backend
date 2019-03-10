@@ -1,8 +1,8 @@
-package main
+package utils
 
 import "log"
 
-func check(err error) {
+func Check(err error) {
 	if err != nil {
 		log.Fatalf("Error occured: %s", err)
 	}

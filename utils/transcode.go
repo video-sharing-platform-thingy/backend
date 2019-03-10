@@ -1,4 +1,4 @@
-package routes
+package utils
 
 import (
 	"log"
@@ -7,7 +7,7 @@ import (
 	"github.com/xfrr/goffmpeg/transcoder"
 )
 
-func transcode(fromPath string, toPath string) error {
+func Transcode(fromPath string, toPath string) error {
 	start := time.Now()
 	trans := new(transcoder.Transcoder)
 	err := trans.Initialize(fromPath, toPath)

@@ -16,3 +16,7 @@
 
 # JetBrains
 *.idea
+
+# Ignore uploads
+transcoded/
+uploaded/

@@ -3,6 +3,7 @@ package routes
 import (
 	"log"
 	"path/filepath"
+	"vspt/utils"
 
 	"github.com/google/uuid"
 	"github.com/valyala/fasthttp"
@@ -10,20 +11,23 @@ import (
 
 func PostUpload(ctx *fasthttp.RequestCtx) {
 	log.Println("Incoming request")
-	fromPath, err := download(ctx)
+	fromPath, err := utils.Download(ctx)
 	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusBadRequest)
 		return
 	}
 
-	uuid := uuid.New().String()
-	toPath, err := filepath.Abs("./transcoded/" + uuid + ".mp4")
+	vidUUID := uuid.New().String()
+	toPath, err := filepath.Abs("./transcoded/" + vidUUID + ".mp4")
 	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 		return
 	}
-	transcode(fromPath, toPath)
-
+	err = utils.Transcode(fromPath, toPath)
+	if err != nil {
+		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
+		return
+	}
 	ctx.SetContentType("video/mp4")
 	ctx.SendFile(toPath)
 }
