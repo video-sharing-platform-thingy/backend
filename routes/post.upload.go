@@ -1,11 +1,12 @@
 package routes
 
 import (
-	"github.com/google/uuid"
-	"github.com/valyala/fasthttp"
 	"log"
 	"path/filepath"
 	"vspt/utils"
+
+	"github.com/google/uuid"
+	"github.com/valyala/fasthttp"
 )
 
 func PostUpload(ctx *fasthttp.RequestCtx) {
@@ -16,8 +17,8 @@ func PostUpload(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	vidUuid := uuid.New().String()
-	toPath, err := filepath.Abs("./transcoded/" + vidUuid + ".mp4")
+	vidUUID := uuid.New().String()
+	toPath, err := filepath.Abs("./transcoded/" + vidUUID + ".mp4")
 	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 		return
