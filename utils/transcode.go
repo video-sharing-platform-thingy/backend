@@ -7,6 +7,7 @@ import (
 	"github.com/xfrr/goffmpeg/transcoder"
 )
 
+// Transcode transcodes a video file.
 func Transcode(fromPath string, toPath string) error {
 	start := time.Now()
 	trans := new(transcoder.Transcoder)
