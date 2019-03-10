@@ -1,11 +1,11 @@
-package src
+package main
 
 import (
-	"log"
-	"routes"
-
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
+	"log"
+	"github.com/video-sharing-platform-thingy/backend/routes"
+	"github.com/video-sharing-platform-thingy/backend/utils"
 )
 
 func main() {
@@ -14,5 +14,5 @@ func main() {
 
 	log.Println("Listening...")
 	err := fasthttp.ListenAndServe(":8080", router.Handler)
-	log.Panicln(err)
+	utils.Check(err)
 }

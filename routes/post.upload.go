@@ -1,16 +1,16 @@
 package routes
 
 import (
-	"log"
-	"path/filepath"
-
 	"github.com/google/uuid"
 	"github.com/valyala/fasthttp"
+	"log"
+	"path/filepath"
+	"video-sharing-platform-thingy/backend/utils"
 )
 
 func PostUpload(ctx *fasthttp.RequestCtx) {
 	log.Println("Incoming request")
-	fromPath, err := Download(ctx)
+	fromPath, err := utils.Download(ctx)
 	if err != nil {
 		ctx.Error(err.Error(), fasthttp.StatusBadRequest)
 		return
@@ -22,7 +22,7 @@ func PostUpload(ctx *fasthttp.RequestCtx) {
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 		return
 	}
-	err = Transcode(fromPath, toPath)
+	err = utils.Transcode(fromPath, toPath)
 	if err != nil{
 		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
 		return
