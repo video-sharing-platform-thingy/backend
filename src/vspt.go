@@ -1,8 +1,8 @@
-package main
+package src
 
 import (
 	"log"
-	"vspt/routes"
+	"routes"
 
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
@@ -14,5 +14,5 @@ func main() {
 
 	log.Println("Listening...")
 	err := fasthttp.ListenAndServe(":8080", router.Handler)
-	check(err)
+	log.Panicln(err)
 }
