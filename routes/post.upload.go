@@ -9,6 +9,7 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+// PostUpload handles POST requess to the /upload route.
 func PostUpload(ctx *fasthttp.RequestCtx) {
 	log.Println("Incoming request")
 	fromPath, err := utils.Download(ctx)
