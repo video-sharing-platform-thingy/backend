@@ -10,8 +10,8 @@ import (
 )
 
 func Download(ctx *fasthttp.RequestCtx) (string, error) {
-	vidUuid := uuid.New().String()
-	toPath, err := filepath.Abs("./uploaded/" + vidUuid + "-" + string(ctx.FormValue("name")))
+	vidUUID := uuid.New().String()
+	toPath, err := filepath.Abs("./uploaded/" + vidUUID + "-" + string(ctx.FormValue("name")))
 	if err != nil {
 		return "", err
 	}
