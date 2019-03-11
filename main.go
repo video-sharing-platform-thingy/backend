@@ -1,18 +1,22 @@
 package main
 
 import (
-	"github.com/buaazp/fasthttprouter"
-	"github.com/valyala/fasthttp"
 	"log"
 	"vspt/routes"
-	"vspt/utils"
+
+	"github.com/buaazp/fasthttprouter"
+	"github.com/valyala/fasthttp"
 )
 
 func main() {
+	// Set up routes
 	router := fasthttprouter.New()
 	router.POST("/upload", routes.PostUpload)
 
+	// Listen on port 8080
 	log.Println("Listening...")
 	err := fasthttp.ListenAndServe(":8080", router.Handler)
-	utils.Check(err)
+	if err != nil {
+		log.Fatalf("Couldn't start server: %s", err)
+	}
 }
