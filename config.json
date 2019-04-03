@@ -1,0 +1,15 @@
+{
+  "name": "VSPT",
+  "baseUrl": "http://localhost:3000",
+  "port": "3000",
+
+  "sessionCookieName": "vspt_session",
+  "logSession": true,
+
+  "oauth": {
+    "google": {
+      "clientId": "430180329257-dh904ksthqef5g2683062ptphgffkfs0.apps.googleusercontent.com",
+      "clientSecret": "N38d6lGM3KlrgIi5nhXF3-0E"
+    }
+  }
+}
