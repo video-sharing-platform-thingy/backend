@@ -2,7 +2,7 @@ package storer
 
 import "time"
 
-// User struct for authboss.
+// User struct for storing, well, users.
 type User struct {
 	ID int
 

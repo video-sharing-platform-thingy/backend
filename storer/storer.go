@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/pkg/errors"
 	"github.com/volatiletech/authboss"
 	aboauth "github.com/volatiletech/authboss/oauth2"
@@ -15,13 +14,12 @@ import (
 
 // DBStorer stores users in a database.
 type DBStorer struct {
-	DB     *gorm.DB
-	Tokens map[string][]string
+	DB *gorm.DB
 }
 
 // NewDBStorer can create a new database storer.
 func NewDBStorer() *DBStorer {
-	return &DBStorer{Tokens: make(map[string][]string)}
+	return &DBStorer{}
 }
 
 // Connect connects to the database.
@@ -30,8 +28,11 @@ func (m *DBStorer) Connect() error {
 	if err != nil {
 		return err
 	}
+
 	db.LogMode(true)
 	db.AutoMigrate(&User{})
+	db.AutoMigrate(&Token{})
+
 	m.DB = db
 	log.Println("Connected to database")
 	return nil
@@ -114,41 +115,38 @@ func (m *DBStorer) LoadByRecoverSelector(ctx context.Context, selector string) (
 }
 
 // AddRememberToken adds a remember token to a user.
-// FIXME: Store tokens in database. Too lazy right now.
 func (m *DBStorer) AddRememberToken(ctx context.Context, pid, token string) error {
-	m.Tokens[pid] = append(m.Tokens[pid], token)
-	log.Printf("Adding rm token to %s: %s\n", pid, token)
-	spew.Dump(m.Tokens)
+	if err := m.DB.Create(&Token{PID: pid, Value: token}).Error; err != nil {
+		return err
+	}
+
+	log.Printf("Added rm token to %s: %s\n", pid, token)
 	return nil
 }
 
 // DelRememberTokens removes all tokens for the given pid.
 func (m *DBStorer) DelRememberTokens(ctx context.Context, pid string) error {
-	delete(m.Tokens, pid)
-	log.Println("Deleting rm tokens from:", pid)
-	spew.Dump(m.Tokens)
+	if err := m.DB.Delete(&Token{}, &Token{PID: pid}).Error; err != nil {
+		return err
+	}
+
+	log.Printf("Deleted rm tokens from: %s\n", pid)
 	return nil
 }
 
 // UseRememberToken finds the pid-token pair and deletes it.
 // If the token could not be found it returns ErrTokenNotFound.
 func (m *DBStorer) UseRememberToken(ctx context.Context, pid, token string) error {
-	tokens, ok := m.Tokens[pid]
-	if !ok {
-		log.Println("Failed to find rm tokens for:", pid)
+	q := m.DB.Delete(&Token{}, &Token{PID: pid, Value: token})
+	if q.Error != nil {
+		return q.Error
+	}
+	if q.RowsAffected < 1 {
 		return authboss.ErrTokenNotFound
 	}
 
-	for i, tok := range tokens {
-		if tok == token {
-			tokens[len(tokens)-1] = tokens[i]
-			m.Tokens[pid] = tokens[:len(tokens)-1]
-			log.Printf("Used remember for %s: %s\n", pid, token)
-			return nil
-		}
-	}
-
-	return authboss.ErrTokenNotFound
+	log.Printf("Used remember for %s: %s\n", pid, token)
+	return nil
 }
 
 // NewFromOAuth2 creates an oauth2 user (not in the database, just a blank one to be saved later).
