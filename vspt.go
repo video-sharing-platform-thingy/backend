@@ -159,7 +159,6 @@ func main() {
 	util.CheckError(err)
 
 	// Initialize the actual session and cookie stores.
-	// TODO: Figure out which of these should be Secure and/or HTTPOnly.
 	cookieStore = abclientstate.NewCookieStorer(cookieStoreKey, nil)
 	cookieStore.HTTPOnly = false
 	cookieStore.Secure = false

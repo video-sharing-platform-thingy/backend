@@ -1,5 +1,7 @@
 package storer
 
+// FIXME: Remove dependency of pkg/errors
+
 import (
 	"context"
 	"log"
