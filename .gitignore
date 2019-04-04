@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+.gomon
 
 # Test binary, built with `go test -c`
 *.test
@@ -17,6 +18,6 @@
 # JetBrains
 *.idea
 
-# Ignore uploads
-transcoded/
-uploaded/
+# Config file + db
+vspt.db
+config.json
