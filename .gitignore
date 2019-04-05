@@ -21,3 +21,8 @@
 # Config file + db
 vspt.db
 config.json
+
+# Vagrant stuff
+.vagrant
+vagrant
+*.log
