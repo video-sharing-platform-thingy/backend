@@ -217,7 +217,7 @@ func main() {
 	})
 
 	// Listen on a port.
-	log.Printf("Listening on localhost:%s\n", loadedConfig.Port)
-	err = http.ListenAndServe("localhost:"+loadedConfig.Port, mux)
+	log.Printf("Listening on 0.0.0.0:%s\n", loadedConfig.Port)
+	err = http.ListenAndServe("0.0.0.0:"+loadedConfig.Port, mux)
 	util.CheckError(err)
 }
