@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/gorilla/schema"
 	"github.com/gorilla/sessions"
+	"github.com/rs/cors"
 	"github.com/video-sharing-platform-thingy/backend/storer"
 	"github.com/video-sharing-platform-thingy/backend/util"
 	"github.com/volatiletech/authboss"
@@ -179,7 +180,12 @@ func main() {
 	// - LoadClientStateMiddleware makes session/cookie stuff work
 	// - remember middleware logs users in if they have a remember token
 	// FIXME: Add CSRF protection.
-	mux.Use(logger, ab.LoadClientStateMiddleware, remember.Middleware(ab))
+	// FIXME: Remove cors after dev
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:8080"},
+		AllowCredentials: true,
+	})
+	mux.Use(logger, ab.LoadClientStateMiddleware, remember.Middleware(ab), c.Handler)
 
 	// Set up authed routes, currently just a test route.
 	// FIXME: Actually add needed routes.
